@@ -7,7 +7,8 @@ typedef enum{
         TOKEN_NEWLINE,
         TOKEN_LPAREN,
         TOKEN_RPAREN,
-        TOKEN_SEMI
+        TOKEN_SEMI,
+        TOKEN_COMMENT
 
 }token_type_T;
 
