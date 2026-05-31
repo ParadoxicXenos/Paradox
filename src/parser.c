@@ -38,6 +38,7 @@ AST_T* parser_parse_statement(parser_T* parser){
             return parser_parse_id(parser);
         }
     }
+    return init_ast(AST_NOOP);
 }
 
 AST_T* parser_parse_statements(parser_T* parser){
@@ -47,12 +48,18 @@ AST_T* parser_parse_statements(parser_T* parser){
     AST_T* statement = parser_parse_statement(parser);
     compound->compound_value[0] = statement;
     compound->compound_size+=1;
+        
     while(parser->current_token->type == TOKEN_SEMI){
         parser_eat(parser,TOKEN_SEMI);  
         AST_T* statement = parser_parse_statement(parser);
-        compound->compound_size+=1;
-        compound->compound_value = realloc(compound->compound_value,compound->compound_size * sizeof(struct AST_STRUCT*));
-        compound->compound_value[compound->compound_size-1] = statement;
+        if (statement){
+
+            compound->compound_size+=1;
+            compound->compound_value = realloc(compound->compound_value,compound->compound_size * sizeof(struct AST_STRUCT*));
+            compound->compound_value[compound->compound_size-1] = statement;
+
+        }
+
         
     }
     return compound;
@@ -68,6 +75,7 @@ AST_T* parser_parse_expr(parser_T* parser){
             return parser_parse_id(parser);
         }
     }
+    return init_ast(AST_NOOP);
 }
 
 AST_T* parser_parse_factor(parser_T* parser){}
