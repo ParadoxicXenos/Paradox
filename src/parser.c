@@ -78,6 +78,8 @@ AST_T* parser_parse_expr(parser_T* parser){
         case TOKEN_STRING: return parser_parse_string(parser);
         
         case TOKEN_ID: return parser_parse_id(parser);
+
+        
     
     }
 
@@ -85,6 +87,11 @@ AST_T* parser_parse_expr(parser_T* parser){
 }
 
 AST_T* parser_parse_factor(parser_T* parser){
+    AST_T* factor = init_ast(AST_FACTOR);
+    factor->factors = calloc(1,sizeof(struct AST_STRUCT*));
+    factor->factors[0] = parser->prev_token->value;
+
+
 
 }
 

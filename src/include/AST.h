@@ -9,7 +9,8 @@ typedef struct AST_STRUCT
         AST_VARIABLE,
         AST_STRING,
         AST_COMPOUND,
-        AST_COMMENT,
+        AST_FACTOR,
+        AST_TERM,
         AST_NOOP //no operation
     } type;
 
@@ -31,6 +32,17 @@ typedef struct AST_STRUCT
     /*AST COMPOUND*/
     struct AST_STRUCT** compound_value;
     size_t compound_size;
+
+    /*AST NUMBER*/
+    int number_value;
+
+    /*AST_FACTOR*/
+    struct AST_STRUCT** factors;
+    size_t factors_size;
+
+    /*AST_TERM*/
+    struct AST_STRUCT** terms;
+    size_t terms_size;
 } AST_T;
 
 AST_T* init_ast(int type);
