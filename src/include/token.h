@@ -1,7 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 typedef enum{
-    TOKEN_ID,
+        TOKEN_ID,
         TOKEN_EQUALS,
         TOKEN_STRING,
         TOKEN_NEWLINE,

@@ -16,6 +16,8 @@ void parser_eat(parser_T* parser, token_type_T token_type);
 
 AST_T* parser_parse(parser_T* parser);
 
+AST_T* parser_parser_id(parser_T* parser);
+
 AST_T* parser_parse_statement(parser_T* parser);
 
 AST_T* parser_parse_statements(parser_T* parser);
@@ -29,5 +31,7 @@ AST_T* parser_parse_term(parser_T* parser);
 AST_T* parser_parse_variable(parser_T* parser);
 
 AST_T* parser_parse_string(parser_T* parser);
+
+AST_T* parser_parse_variable_definition(parser_T* parser);
 
 #endif
