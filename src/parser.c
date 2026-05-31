@@ -62,9 +62,22 @@ AST_T* parser_parse_factor(parser_T* parser){}
 
 AST_T* parser_parse_term(parser_T* parser){}
 
-AST_T* parser_parse_variable(parser_T* parser){}
+AST_T* parser_parse_variable(parser_T* parser){
 
-AST_T* parser_parse_string(parser_T* parser){}
+    char* token_value = parser->current_token->value;
+    parser_eat(parser,TOKEN_ID);
+    if (parser->current_token->type == TOKEN_LPAREN){ // change from parsing a variable to a function call if we see "(" after first token
+        return parser_parse_function_call(parser);
+    }
+    
+    AST_T* ast_variable = init_ast(AST_VARIABLE);
+    ast_variable->variable_name = token_value;
+    return ast_variable;
+}
+
+AST_T* parser_parse_string(parser_T* parser){
+    
+}
 
 AST_T* parser_parser_id(parser_T* parser){
     if (strcmp(parser->current_token->value, "var") == 0){
@@ -86,5 +99,7 @@ AST_T* parser_parse_variable_definition(parser_T* parser){
     variable_definition->variable_definition_variable_name = variable_name;
     variable_definition->variable_definition_value = variable_value;
 
-    parser_eat(parser,TOKEN_SEMI); // var name = "john";
+    return variable_definition;
 }
+
+AST_T* parser_arse_fuction_call(parser_T* parser){}

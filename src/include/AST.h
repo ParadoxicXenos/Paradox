@@ -4,7 +4,7 @@
 typedef struct AST_STRUCT
 {
     enum{
-        AST_VARIABLE_DEFINITION,
+         AST_VARIABLE_DEFINITION,
         AST_FUNCTION_CALL,
         AST_VARIABLE,
         AST_STRING,
