@@ -122,5 +122,6 @@ token_T* lexer_collect_number(lexer_T* lexer){
         lexer_advance(lexer);
 
     }
+    
     return init_token(TOKEN_NUMBER, value);
 }
