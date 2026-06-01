@@ -2,8 +2,23 @@
 #include "include/token.h"
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+
+
+int is_number(char str){
+    char endptr;
+    strtol(str, endptr,10);
+    if (endptr == "\0"){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+
 
 lexer_T* init_lexer(char* contents){
     lexer_T* lexer = calloc(1, sizeof(struct LEXER_STRUCT));
@@ -37,7 +52,9 @@ token_T* lexer_get_next_token(lexer_T* lexer){
         if (lexer->c == '"'){
             return lexer_collect_string(lexer);
         }
-
+        if (is_number(lexer->c) == 1){
+            return lexer_collect_number(lexer);
+        }
         switch (lexer->c){
             case '=': return lexer_advance_with_token(lexer, init_token(TOKEN_EQUALS,lexer_get_current_char_as_string(lexer))); break;
             case '(': return lexer_advance_with_token(lexer, init_token(TOKEN_LPAREN,lexer_get_current_char_as_string(lexer))); break;
@@ -46,6 +63,10 @@ token_T* lexer_get_next_token(lexer_T* lexer){
             case '{': return lexer_advance_with_token(lexer, init_token(TOKEN_LBRACE,lexer_get_current_char_as_string(lexer))); break;
             case ';': return lexer_advance_with_token(lexer, init_token(TOKEN_SEMI,lexer_get_current_char_as_string(lexer))); break;
             case ',': return lexer_advance_with_token(lexer,init_token(TOKEN_COMMA,lexer_get_current_char_as_string(lexer)));break;
+            case '+': return lexer_advance_with_token(lexer,init_token(TOKEN_PLUS,lexer_get_current_char_as_string(lexer))); break;
+            case '-': return lexer_advance_with_token(lexer,init_token(TOKEN_MINUS,lexer_get_current_char_as_string(lexer))); break;
+            case '*': return lexer_advance_with_token(lexer, init_token(TOKEN_MULT, lexer_get_current_char_as_string(lexer))); break;
+            case '/':{} // IDK how to modify divide and minus (ideally should turn minus into adding a negtive number and divide as multiplying 1/number)
         }
     }
     return init_token(TOKEN_EOF,"\0");
@@ -91,4 +112,18 @@ char* lexer_get_current_char_as_string(lexer_T* lexer){
     str[0] = lexer->c;
     str[1] = '\0';
     return str;
+}
+
+token_T* lexer_collect_number(lexer_T* lexer){
+    char* value = calloc(1,sizeof(char));
+    value[0] = '\0';
+    while (is_number(lexer->c)){
+        char* s = lexer_get_current_char_as_string(lexer);
+        value = realloc(value, (strlen(value) + strlen(s) + 1) *sizeof(char));
+        strcat(value,s);
+        lexer_advance(lexer);
+
+    }
+    
+    return init_token(TOKEN_NUMBER, value);
 }

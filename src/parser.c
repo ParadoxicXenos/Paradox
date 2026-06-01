@@ -78,6 +78,10 @@ AST_T* parser_parse_expr(parser_T* parser){
         case TOKEN_STRING: return parser_parse_string(parser);
         
         case TOKEN_ID: return parser_parse_id(parser);
+
+        case TOKEN_MULT: return parser_parse_factor(parser);
+
+        
     
     }
 
@@ -85,10 +89,48 @@ AST_T* parser_parse_expr(parser_T* parser){
 }
 
 AST_T* parser_parse_factor(parser_T* parser){
+    AST_T* factor = init_ast(AST_FACTOR);
+    factor->factors = calloc(1,sizeof(struct AST_STRUCT*));
+    factor->factors[0] = parser->prev_token->value;
+    factor->factors_size += 1;
+    parser_eat(parser,TOKEN_MULT);
+    while (parser->current_token->type == TOKEN_MULT){
+        parser_eat(parser, TOKEN_MULT);
+        factor->factors_size += 1;
+        factor->factors = realloc(factor->factors, factor->factors_size * sizeof(struct AST_STRUCT*));
+        factor->factors[factor->factors_size-1] = parser->current_token->value;
+
+    }
+    return factor; 
+
 
 }
 
 AST_T* parser_parse_term(parser_T* parser){
+    AST_T* term = init_ast(AST_TERM);
+    term->terms = calloc(1,sizeof(struct AST_STRUCT*));
+    if (parser->current_token->type == TOKEN_MINUS){
+        char* endptr;
+        parser_eat(parser,TOKEN_MINUS);
+        long val = strtol(parser->current_token->value, &endptr, 10);
+        val = -val;
+        char value; //TODO: finish subtraction logic
+
+    }
+    else{
+        term->terms[0] = parser->prev_token->value;
+        term->terms_size += 1;
+    }
+    parser_eat(parser,TOKEN_PLUS);
+    while (parser->current_token->type == TOKEN_PLUS || parser->current_token->type == TOKEN_MINUS){
+        parser_eat(parser, TOKEN_PLUS);
+        term->terms_size += 1;
+        term->terms = realloc(term->terms, term->terms_size * sizeof(struct AST_STRUCT*));
+        term->terms[term->terms_size-1] = parser->current_token->value;
+
+    }
+    return term; 
+
 
 }
 

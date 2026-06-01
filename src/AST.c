@@ -29,5 +29,16 @@ AST_T* init_ast(int type){
     ast->compound_value = (void*) 0;
     ast->compound_size = 0;
 
+    //AST FACTOR
+    ast->factors = (void*) 0;
+    ast->factors_size = 0;
+
+    //AST TERM
+    ast->terms= (void*) 0;
+    ast->terms_size = 0;
+
+    //AST NUMBER
+    ast->number_value = 0;
+
     return ast;
 }
