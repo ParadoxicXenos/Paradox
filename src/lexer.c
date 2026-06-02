@@ -2,7 +2,6 @@
 #include "include/token.h"
 #include <ctype.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -16,7 +15,7 @@ int is_number(char str){/*
     else{
         return 0;
     }*/
-}
+return 0;}
 
 
 

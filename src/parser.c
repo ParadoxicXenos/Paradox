@@ -1,7 +1,9 @@
 #include "include/parser.h"
 #include "include/AST.h"
+#include "include/token.h"
 #include <stdio.h>
 #include <string.h>
+
 
 
 static scope_T* get_node_scope(parser_T* parser, AST_T* node){
@@ -43,8 +45,24 @@ AST_T* parser_parse_statement(parser_T* parser, scope_T* scope){
     switch(parser->current_token->type){
 
         case TOKEN_ID:return parser_parse_id(parser,scope);
-        
-    }
+
+        case TOKEN_EQUALS:
+        case TOKEN_STRING:
+        case TOKEN_NEWLINE:
+        case TOKEN_LPAREN:
+        case TOKEN_RPAREN:
+        case TOKEN_SEMI:
+        case TOKEN_COMMENT:
+        case TOKEN_RBRACE:
+        case TOKEN_LBRACE:
+        case TOKEN_NUMBER:
+        case TOKEN_PLUS:
+        case TOKEN_MINUS:
+        case TOKEN_MULT:
+        case TOKEN_COMMA:
+        case TOKEN_EOF:
+          break;
+        }
     return init_ast(AST_NOOP);
 }
 
@@ -93,9 +111,9 @@ AST_T* parser_parse_expr(parser_T* parser, scope_T* scope){
 
         
     
-    }
+    }*/
 
-    return init_ast(AST_NOOP);*/
+    return init_ast(AST_NOOP);
 }
 
 AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
@@ -117,8 +135,8 @@ AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
         factor->factors[factor->factors_size-1] = parser->current_token->value;
 
     }
-    
-    return factor;*/ 
+    */
+    return init_ast(AST_NOOP);
 }
 
 AST_T* parser_parse_term(parser_T* parser, scope_T* scope){
@@ -267,10 +285,10 @@ AST_T* parser_parse_id(parser_T* parser, scope_T* scope){
         if (strcmp(parser->current_token->value, "func") == 0){
             return parser_parse_function_definition(parser,scope);
         }
-    else{
+        else{
 
-        return parser_parse_variable(parser,scope);
-    }
+            return parser_parse_variable(parser,scope);
+        }
     
 }
 
