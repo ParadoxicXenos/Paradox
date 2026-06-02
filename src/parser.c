@@ -2,6 +2,7 @@
 #include "include/AST.h"
 #include "include/token.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 
@@ -140,14 +141,22 @@ AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
 }
 
 AST_T* parser_parse_term(parser_T* parser, scope_T* scope){
-   /* AST_T* term = init_ast(AST_TERM);
+    AST_T* term = init_ast(AST_TERM);
     term->terms = calloc(1,sizeof(struct AST_STRUCT*));
     if (parser->current_token->type == TOKEN_MINUS){
         char* endptr;
         parser_eat(parser,TOKEN_MINUS);
         long val = strtol(parser->current_token->value, &endptr, 10);
         val = -val;
-        char value; //TODO: finish subtraction logic & pls start building the code to check errors b4 pushing
+        char* value = calloc(1, sizeof(char));
+        value[0] = '\0';
+        value[1] = val;
+        char* valuee;
+        strcat(valuee,value); // trust me this makes sense 
+        
+        term->terms[0] = valuee;
+        term->terms_size +=1;
+
 
     }
     else{
@@ -156,15 +165,32 @@ AST_T* parser_parse_term(parser_T* parser, scope_T* scope){
     }
     parser_eat(parser,TOKEN_PLUS);
     while (parser->current_token->type == TOKEN_PLUS || parser->current_token->type == TOKEN_MINUS){
+        
+        if (parser->current_token->type == TOKEN_PLUS){
         parser_eat(parser, TOKEN_PLUS);
         term->terms_size += 1;
         term->terms = realloc(term->terms, term->terms_size * sizeof(struct AST_STRUCT*));
         term->terms[term->terms_size-1] = parser->current_token->value;
-
+        }
+        else if (parser->current_token->type == TOKEN_MINUS) {
+        char* endptr;
+        parser_eat(parser,TOKEN_MINUS);
+        long val = strtol(parser->current_token->value, &endptr, 10);
+        val = -val;
+        char* value = calloc(1, sizeof(char));
+        value[0] = '\0';
+        value[1] = val;
+        char* valuee;
+        strcat(valuee,value); // trust me this makes sense 
+        
+        term->terms_size +=1;
+        term->terms = realloc(term->terms, term->terms_size*sizeof(char**));
+        term->terms[term->terms_size-1] = valuee;
+        }
     }
     return term; 
 
-*/
+
 }
 
 AST_T* parser_parse_function_call(parser_T* parser, scope_T* scope){
