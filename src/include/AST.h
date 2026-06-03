@@ -45,11 +45,11 @@ typedef struct AST_STRUCT
     int number_value;
     
     /*AST_FACTOR*/
-    char** factors;
+    int* factors;
     size_t factors_size;
 
     /*AST_TERM*/
-    char** terms;
+    int* terms;
     size_t terms_size;
 } AST_T;
 

@@ -134,7 +134,7 @@ AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
     AST_T* factor = init_ast(AST_FACTOR);
     
     factor->factors = calloc(1,sizeof(struct AST_STRUCT*));
-    factor->factors[0] = parser->prev_token->value;
+    factor->factors[0] = strtol(parser->prev_token->value,NULL, 10);
     factor->factors_size += 1;
     
     parser_eat(parser,TOKEN_MULT);
@@ -145,7 +145,7 @@ AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
         
         factor->factors_size += 1;
         factor->factors = realloc(factor->factors, factor->factors_size * sizeof(struct AST_STRUCT*));
-        factor->factors[factor->factors_size-1] = parser->current_token->value;
+        factor->factors[factor->factors_size-1] = strtol(parser->current_token->value,NULL,10);
 
     }
     
@@ -160,19 +160,12 @@ AST_T* parser_parse_term(parser_T* parser, scope_T* scope){
         parser_eat(parser,TOKEN_MINUS);
         long val = strtol(parser->current_token->value, &endptr, 10);
         val = -val;
-        char* value = calloc(1, sizeof(char));
-        value[0] = '\0';
-        value[1] = val;
-        char* valuee;
-        strcat(valuee,value); // trust me this makes sense 
-        
-        term->terms[0] = valuee;
-        term->terms_size +=1;
+        term->terms[0] = val;
 
 
     }
     else{
-        term->terms[0] = parser->prev_token->value;
+        term->terms[0] = strtol(parser->prev_token->value,NULL,10);
         term->terms_size += 1;
     }
     parser_eat(parser,TOKEN_PLUS);
@@ -181,23 +174,19 @@ AST_T* parser_parse_term(parser_T* parser, scope_T* scope){
         if (parser->current_token->type == TOKEN_PLUS){
         parser_eat(parser, TOKEN_PLUS);
         term->terms_size += 1;
-        term->terms = realloc(term->terms, term->terms_size * sizeof(struct AST_STRUCT*));
-        term->terms[term->terms_size-1] = parser->current_token->value;
+        term->terms = realloc(term->terms, term->terms_size * sizeof(int*));
+        term->terms[term->terms_size-1] = strtol(parser->current_token->value,NULL, 10);
         }
         else if (parser->current_token->type == TOKEN_MINUS) {
         char* endptr;
         parser_eat(parser,TOKEN_MINUS);
         long val = strtol(parser->current_token->value, &endptr, 10);
         val = -val;
-        char* value = calloc(1, sizeof(char));
-        value[0] = '\0';
-        value[1] = val;
-        char* valuee;
-        strcat(valuee,value); // trust me this makes sense 
+
         
         term->terms_size +=1;
-        term->terms = realloc(term->terms, term->terms_size*sizeof(char**));
-        term->terms[term->terms_size-1] = valuee;
+        term->terms = realloc(term->terms, term->terms_size*sizeof(int*));
+        term->terms[term->terms_size-1] = val;
         }
     }
     return term; 
