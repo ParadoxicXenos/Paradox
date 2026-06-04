@@ -138,14 +138,9 @@ AST_T* visitor_visit_function_call(visitor_T* visitor, AST_T* node){
         
         AST_T* ast_vardef = init_ast(AST_VARIABLE_DEFINITION);
  
-        AST_T* ast_vardef->variable_definition_variable_name = init_ast(AST_VARIABLE_DEFINITION_VARIABLE_NAME);
-
-        printf("ast_var = %p\n", ast_var);
-        printf("name ptr = %p\n", ast_var->variable_definition_variable_name);
-
-        ast_vardef->variable_definition_variable_name = calloc(strlen(ast_var->variable_definition_variable_name) +1, sizeof(char));
+        ast_vardef->variable_definition_variable_name = (char*) calloc(strlen(ast_var->variable_name) +1, sizeof(char));
         
-        strcpy(ast_vardef->variable_definition_variable_name, ast_var->variable_definition_variable_name);
+        strcpy(ast_vardef->variable_definition_variable_name, ast_var->variable_name);
 
         scope_add_variable_definition(
                 fdef->function_definition_body->scope,
