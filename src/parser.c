@@ -1,5 +1,4 @@
 #include "include/parser.h"
-#include "include/AST.h"
 #include "include/scope.h"
 #include "include/token.h"
 #include <stdio.h>
@@ -19,6 +18,7 @@ parser_T* init_parser(lexer_T* lexer){
 }
 
 void parser_eat(parser_T* parser, int token_type){
+    
     if (parser->current_token->type == token_type){
         parser->prev_token = parser->current_token;
         parser->current_token = lexer_get_next_token(parser->lexer);
@@ -33,6 +33,7 @@ void parser_eat(parser_T* parser, int token_type){
 }
 
 AST_T* parser_parse(parser_T* parser, scope_T* scope){
+    
     return parser_parse_statements(parser,scope);
 }
 
@@ -41,22 +42,8 @@ AST_T* parser_parse_statement(parser_T* parser, scope_T* scope){
     switch(parser->current_token->type){
 
         case TOKEN_ID:return parser_parse_id(parser,scope);
-
-        case TOKEN_EQUALS:
-        case TOKEN_STRING:
-        case TOKEN_NEWLINE:
-        case TOKEN_LPAREN:
-        case TOKEN_RPAREN:
-        case TOKEN_SEMI:
-        case TOKEN_COMMENT:
-        case TOKEN_RBRACE:
-        case TOKEN_LBRACE:
         case TOKEN_NUMBER: return parser_parse_number(parser, scope);
-        case TOKEN_PLUS:
-        case TOKEN_MINUS:
-        case TOKEN_MULT:
-        case TOKEN_COMMA:
-        case TOKEN_EOF:
+            
           break;
         }
     return init_ast(AST_NOOP);
