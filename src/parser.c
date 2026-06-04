@@ -51,7 +51,7 @@ AST_T* parser_parse_statement(parser_T* parser, scope_T* scope){
         case TOKEN_COMMENT:
         case TOKEN_RBRACE:
         case TOKEN_LBRACE:
-        case TOKEN_NUMBER:
+        case TOKEN_NUMBER: return parser_parse_number(parser, scope);
         case TOKEN_PLUS:
         case TOKEN_MINUS:
         case TOKEN_MULT:
@@ -97,6 +97,8 @@ AST_T* parser_parse_statements(parser_T* parser, scope_T* scope){
 
 AST_T* parser_parse_expr(parser_T* parser, scope_T* scope){
 
+    printf("%u",parser->current_token->type);
+
     switch (parser->current_token->type){
 
         case TOKEN_STRING: return parser_parse_string(parser,scope);
@@ -113,7 +115,7 @@ AST_T* parser_parse_expr(parser_T* parser, scope_T* scope){
         case TOKEN_COMMENT:
         case TOKEN_RBRACE:
         case TOKEN_LBRACE:
-        case TOKEN_NUMBER:
+        case TOKEN_NUMBER: return parser_parse_number(parser,  scope);
         case TOKEN_PLUS:
         case TOKEN_MINUS:
         case TOKEN_COMMA:
