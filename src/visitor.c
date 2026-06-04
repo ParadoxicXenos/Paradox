@@ -10,7 +10,7 @@ static AST_T* builtin_function_print(visitor_T* visitor, AST_T** args, int args_
 
         switch (visited_ast->type){
             case AST_STRING: printf("%s\n",visited_ast->string_value); break;
-            default: printf("%p\n", visited_ast); break;
+            default: printf("%d\n", visited_ast->number_value); break;
 
         }
 

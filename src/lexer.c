@@ -34,14 +34,14 @@ token_T* lexer_get_next_token(lexer_T* lexer){
         if(lexer->c  == ' '|| lexer->c ==10){
             lexer_skip_whitespace(lexer);
         }
+         if (isdigit(lexer->c) == 1){
+            return lexer_collect_number(lexer);
+        }
         if (isalnum(lexer->c)){
             return lexer_collect_id(lexer);
         }
         if (lexer->c == '"'){
             return lexer_collect_string(lexer);
-        }
-        if (isdigit(lexer->c) == 1){
-            return lexer_collect_number(lexer);
         }
         switch (lexer->c){
             case '=': return lexer_advance_with_token(lexer, init_token(TOKEN_EQUALS,lexer_get_current_char_as_string(lexer))); break;

@@ -26,4 +26,6 @@ AST_T* visitor_visit_factor(visitor_T* visitor, AST_T* node);
 
 AST_T* visitor_visit_term(visitor_T* visitor, AST_T* node);
 
+AST_T* visitor_visit_number(visitor_T* visitor, AST_T* node);
+
 #endif

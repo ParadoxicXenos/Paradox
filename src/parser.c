@@ -1,5 +1,6 @@
 #include "include/parser.h"
 #include "include/AST.h"
+#include "include/scope.h"
 #include "include/token.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -316,3 +317,10 @@ AST_T* parser_parse_id(parser_T* parser, scope_T* scope){
 
 
 
+AST_T* parser_parse_number(parser_T* parser, scope_T* scope){
+
+    AST_T* ast_number = init_ast(AST_NUMBER);
+    ast_number->number_value = strtol(parser->current_token->value,NULL, 10);
+    return ast_number;
+
+}
