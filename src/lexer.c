@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdio.h>
 
 
 
@@ -35,11 +36,13 @@ token_T* lexer_get_next_token(lexer_T* lexer){
         if(lexer->c  == ' '|| lexer->c ==10){
             lexer_skip_whitespace(lexer);
         }
-         if (isdigit(lexer->c) == 1 ){
+        if (isdigit(lexer->c)){
             return lexer_collect_number(lexer);
+            
         }
         if (isalnum(lexer->c)){
             return lexer_collect_id(lexer);
+            
         }
         if (lexer->c == '"'){
             return lexer_collect_string(lexer);
@@ -106,13 +109,12 @@ char* lexer_get_current_char_as_string(lexer_T* lexer){
 token_T* lexer_collect_number(lexer_T* lexer){
     char* value = calloc(1,sizeof(char));
     value[0] = '\0';
-    while (isdigit(lexer->c) == 1){
+    while (isdigit(lexer->c)){
         char* s = lexer_get_current_char_as_string(lexer);
         value = realloc(value, strlen(value) + (strlen(s) + 1 *sizeof(char)));
         strcat(value,s);
         lexer_advance(lexer);
 
     }
-    
     return init_token(TOKEN_NUMBER, value);
 }
