@@ -25,7 +25,7 @@ static AST_T* builtin_function_sum(visitor_T* visitor, AST_T** args, int args_si
     
     for (int i = 0; i < args_size; i++)
     {
-    AST_T* visited_ast = visitor_visit(visitor, args[i]);
+    AST_T* visited_ast = visitor_visit_number(visitor, args[i]);
     printf("AST type = %d\n", visited_ast->type);
     switch (visited_ast->type)
     {
@@ -64,8 +64,8 @@ static AST_T* builtin_function_exit(visitor_T* visitor, AST_T** args, int args_s
 {
     for (int i = 0; i < args_size; i++)
     {
-        AST_T* visited_ast = visitor_visit(visitor, args[i]);
-
+        AST_T* visited_ast = visitor_visit_number(visitor, args[i]);
+        printf("%d \n",visited_ast->type);
         switch (visited_ast->type)
         {
             case AST_NOOP: printf("You exited\n"); exit(0); break;
@@ -110,6 +110,7 @@ AST_T* visitor_visit(visitor_T* visitor, AST_T* node)
         case AST_STRING: return visitor_visit_string(visitor, node); break;
         case AST_COMPOUND: return visitor_visit_compound(visitor, node); break;
         case AST_NOOP: return node; break;
+        case AST_NUMBER: return visitor_visit_number(visitor, node); break;
     }
 
     printf("Uncaught statement of type `%d`\n", node->type);
@@ -222,4 +223,17 @@ AST_T* visitor_visit_compound(visitor_T* visitor, AST_T* node)
     }
 
     return init_ast(AST_NOOP);
+}
+
+AST_T* visitor_visit_number(visitor_T* visitor, AST_T* node){
+    printf("VISITING NUMBER");
+    scope_add_variable_definition(node->scope, node);
+
+    AST_T* ndef = scope_get_variable_definition(node->scope,node->variable_definition_variable_name);
+    
+    if (ndef != (void*) 0)
+        return visitor_visit(visitor, ndef->variable_definition_value);
+
+    printf("Undefined Number `%s`\n", node);
+    exit(1);
 }

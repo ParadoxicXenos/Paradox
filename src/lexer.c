@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdio.h>
 
 
 
@@ -35,13 +36,18 @@ token_T* lexer_get_next_token(lexer_T* lexer){
         if(lexer->c  == ' '|| lexer->c ==10){
             lexer_skip_whitespace(lexer);
         }
-        if (isdigit(lexer->c) == 1 ){
+        if (isdigit(lexer->c)){
+            printf("%p IS A DIGIT \n", lexer->c);
             return lexer_collect_number(lexer);
+            
         }
         if (isalnum(lexer->c)){
+            printf("%p IS AN ID \n", lexer->c);
             return lexer_collect_id(lexer);
+            
         }
         if (lexer->c == '"'){
+            printf("%p IS A STRING \n", lexer->c);
             return lexer_collect_string(lexer);
         }
         switch (lexer->c){
@@ -106,13 +112,17 @@ char* lexer_get_current_char_as_string(lexer_T* lexer){
 token_T* lexer_collect_number(lexer_T* lexer){
     char* value = calloc(1,sizeof(char));
     value[0] = '\0';
-    while (isdigit(lexer->c) == 1){
+    while (isdigit(lexer->c)){
         char* s = lexer_get_current_char_as_string(lexer);
+        printf("GOT CHAR AS STRING!!");
         value = realloc(value, strlen(value) + (strlen(s) + 1 *sizeof(char)));
+        printf("SUCCESSFUL REALLOC");
         strcat(value,s);
+        printf("CAT WORKED");
         lexer_advance(lexer);
+        printf("ADVANCED SUCCESFULLY");
 
     }
-    
+    printf("INITIALISING TOKEN NOW LOL");
     return init_token(TOKEN_NUMBER, value);
 }
