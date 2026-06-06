@@ -90,7 +90,7 @@ AST_T* parser_parse_expr(parser_T* parser, scope_T* scope)
         case TOKEN_ID: return parser_parse_id(parser,scope);
 
         case TOKEN_MULT: return parser_parse_factor(parser,scope);
-        case TOKEN_NUMBER: return parser_parse_id(parser, scope);
+        case TOKEN_NUMBER: return parser_parse_number(parser, scope);
     }
 
     return init_ast(AST_NOOP);
@@ -252,6 +252,7 @@ AST_T* parser_parse_number(parser_T* parser, scope_T* scope){
 
     AST_T* ast_number = init_ast(AST_NUMBER);
     ast_number->number_value = strtol(parser->current_token->value,NULL, 10);
+    parser_eat(parser, TOKEN_NUMBER);
     return ast_number;
 
 }

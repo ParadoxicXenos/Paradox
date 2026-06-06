@@ -22,16 +22,13 @@ static AST_T* builtin_function_print(visitor_T* visitor, AST_T** args, int args_
 
 static AST_T* builtin_function_sum(visitor_T* visitor, AST_T** args, int args_size)
 {
-    
+    int value = 0; 
     for (int i = 0; i < args_size; i++)
     {
-    AST_T* visited_ast = visitor_visit_number(visitor, args[i]);
-    printf("AST type = %d\n", visited_ast->type);
-    switch (visited_ast->type)
-    {
-        default: printf("%p\n", visited_ast); break;
-    }    
-}
+        AST_T* visited_ast = visitor_visit_number(visitor, args[i]);
+        value = value + visited_ast->number_value;    
+    }  
+    printf("The Result of the operation is: %ld",value)
     return init_ast(AST_NOOP);
 }
 /*static AST_T* builtin_function_sub(visitor_T* visitor, AST_T** args, int args_size)
@@ -226,14 +223,5 @@ AST_T* visitor_visit_compound(visitor_T* visitor, AST_T* node)
 }
 
 AST_T* visitor_visit_number(visitor_T* visitor, AST_T* node){
-    printf("VISITING NUMBER");
-    scope_add_variable_definition(node->scope, node);
-
-    AST_T* ndef = scope_get_variable_definition(node->scope,node->variable_definition_variable_name);
-    
-    if (ndef != (void*) 0)
-        return visitor_visit(visitor, ndef->variable_definition_value);
-
-    printf("Undefined Number `%s`\n", node);
-    exit(1);
+    return node;
 }
