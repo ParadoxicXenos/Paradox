@@ -94,9 +94,6 @@ AST_T* parser_parse_expr(parser_T* parser, scope_T* scope)
     return init_ast(AST_NOOP);
 }
 
-AST_T* parser_parse_factor(parser_T* parser, scope_T* scope)
-{
-}
 
 AST_T* parser_parse_term(parser_T* parser, scope_T* scope)
 {
@@ -254,9 +251,34 @@ AST_T* parser_parse_number(parser_T* parser, scope_T* scope){
     if (parser->current_token->type == TOKEN_PLUS){
         return parser_parse_sum(parser, scope);
     }
+    if (parser->current_token->type == TOKEN_MINUS){
+        return parser_parse_sub(parser, scope);
+    }
+    if (parser->current_token->type == TOKEN_MULT){
+        return parser_parse_factor(parser, scope);
+    }
+
     return ast_number;
 
 }
+AST_T* parser_parse_sub(parser_T* parser, scope_T* scope){
+    AST_T* ast_number = init_ast(AST_NUMBER);
+    ast_number->number_value = strtol(parser->prev_token->value,NULL, 10);
+    long value = ast_number->number_value;
+    while (1){
+        parser_eat(parser, TOKEN_MINUS);
+        ast_number->number_value = strtol(parser->current_token->value,NULL, 10);
+        value = value - ast_number->number_value;
+        parser_eat(parser, TOKEN_NUMBER);
+
+        if (parser->current_token->type == TOKEN_SEMI || parser->current_token->type == TOKEN_RPAREN){
+            ast_number->number_value = value;
+            return ast_number;
+        }
+    }
+
+}
+
 AST_T* parser_parse_sum(parser_T* parser, scope_T* scope){
     AST_T* ast_number = init_ast(AST_NUMBER);
     ast_number->number_value = strtol(parser->prev_token->value,NULL, 10);
@@ -273,3 +295,23 @@ AST_T* parser_parse_sum(parser_T* parser, scope_T* scope){
     }
 
 }
+
+AST_T* parser_parse_factor(parser_T* parser, scope_T* scope){
+    AST_T* ast_number = init_ast(AST_NUMBER);
+    ast_number->number_value = strtol(parser->prev_token->value,NULL, 10);
+    long value = ast_number->number_value;
+    while (1){
+    parser_eat(parser, TOKEN_MULT);
+    ast_number->number_value = strtol(parser->current_token->value,NULL, 10);
+    value = value * ast_number->number_value;
+    parser_eat(parser, TOKEN_NUMBER);
+    if (parser->current_token->type == TOKEN_SEMI || parser->current_token->type == TOKEN_RPAREN){
+        ast_number->number_value = value;
+        return ast_number;
+    }
+    }
+
+}
+
+
+

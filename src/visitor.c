@@ -13,6 +13,7 @@ static AST_T* builtin_function_print(visitor_T* visitor, AST_T** args, int args_
         switch (visited_ast->type)
         {
             case AST_NUMBER: printf("%ld\n", visited_ast->number_value);break;
+            case AST_FLOAT: printf("%f\n", visited_ast->float_value);break;
             case AST_STRING: printf("%s\n", visited_ast->string_value); break;
             default: printf("%p\n", visited_ast); break;
             
@@ -73,6 +74,7 @@ AST_T* visitor_visit(visitor_T* visitor, AST_T* node)
         case AST_COMPOUND: return visitor_visit_compound(visitor, node); break;
         case AST_NOOP: return node; break;
         case AST_NUMBER: return visitor_visit_number(visitor, node); break;
+        case AST_FLOAT: return visitor_visit_float(visitor, node); break;
     }
 
     printf("Uncaught statement of type `%d`\n", node->type);
@@ -184,5 +186,8 @@ AST_T* visitor_visit_compound(visitor_T* visitor, AST_T* node)
 }
 
 AST_T* visitor_visit_number(visitor_T* visitor, AST_T* node){
+    return node;
+}
+AST_T* visitor_visit_float(visitor_T* visitor, AST_T* node){
     return node;
 }

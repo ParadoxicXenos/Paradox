@@ -13,6 +13,7 @@ typedef struct AST_STRUCT
         AST_FACTOR,
         AST_TERM,
         AST_NUMBER,
+        AST_FLOAT,
         AST_NOOP //no operation
     } type;
 
@@ -46,6 +47,9 @@ typedef struct AST_STRUCT
 
     /*AST NUMBER*/
     int number_value;
+
+    /*AST FLOAT*/
+    int float_value;
     
     /*AST_FACTOR*/
     int* factors;

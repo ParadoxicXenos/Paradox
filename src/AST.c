@@ -43,5 +43,8 @@ AST_T* init_ast(int type){
     //AST NUMBER
     ast->number_value = 0;
 
+    //AST NUMBER
+    ast->float_value = 0.0;
+
     return ast;
 }
