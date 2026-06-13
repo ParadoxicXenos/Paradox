@@ -12,8 +12,8 @@ int main(int argc, char* argv[])
     if (argc >= 2){
         for(int i = 1; i < argc; i++){
             int len = strlen(argv[i]);
-            char* last_four = &argv[i][len-8];
-            if(strcmp(last_four,".paradox") == 0){
+            char* last_eight = &argv[i][len-8];
+            if(strcmp(last_eight,".paradox") == 0){
                 lexer_T* lexer = init_lexer(
                     get_file_contents(argv[i]));
                 

@@ -76,7 +76,7 @@ AST_T* scope_add_variable_definition(scope_T* scope, AST_T* vdef)
 
 AST_T* scope_get_variable_definition(scope_T* scope, const char* name)
 {
-    for (int i = 0; i < scope->variable_definitions_size; i++)
+    for (int i = scope->variable_definitions_size - 1; i >= 0; i--)
     {
         AST_T* vdef = scope->variable_definitions[i];
 
